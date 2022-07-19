@@ -1,19 +1,17 @@
 
-import json
 from loguru import logger
 
 
-def get_list_node_labels(driver):
+def get_possible_link_names_from_db(driver, node_id):
     try:
         session = driver.session(database='concept1')
-        q = """
-            CALL db.labels()
+        q = f"""
+            MATCH (n)-[p]-()
+            WHERE ID(n) = {node_id}
+            RETURN collect(distinct type(p))
         """
         response = list(session.run(q))
-
-        # logger.warning(list(map(lambda x: x.value(), response)))
-        # logger.warning(response[0].value())
-        return list(map(lambda x: x.value(), response))
+        return response[0].value()
     except Exception as e:
         print("Query failed:", e)
     finally:

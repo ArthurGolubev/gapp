@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { ADD_NODE } from '../gql/mutations'
 import { GET_LIST_NODE_LABELS } from '../gql/query'
+import ExtraAttr from './ExtraAttr'
+import AttrTable from './AttrTable'
 
 
 const AddNode = () => {
@@ -14,6 +16,7 @@ const AddNode = () => {
             nodeName: '',
             nodeType: '',
             extraAttribute: [],
+            color: "#ff10ff",
             validation: {
                 label: "",
                 name: "",
@@ -44,6 +47,7 @@ const AddNode = () => {
                 nodeName: '',
                 nodeType: '',
                 extraAttribute: [],
+                color: "#ff10ff",
                 validation: {
                     label: "",
                     name: "",
@@ -66,21 +70,13 @@ const AddNode = () => {
         }
     }
 
-    const addExtraAttr = () => {
-        let name = document.querySelector("#extraAttr-name")
-        let value = document.querySelector("#extraAttr-value")
-        setState({...state, extraAttribute: [...state.extraAttribute, {name: name.value, value: value.value} ]})
-        name.value = ''
-        value.value = ''
-    }
-
     return <div>
         <div className='row'>
             <div className='col'>
                 {/* node label select */}
-                <select className='form-select form-select-sm mt-1' disabled={state?.customNodeLabel} id="node-label"
+                <select defaultValue="-1" className='form-select form-select-sm mt-1' disabled={state?.customNodeLabel} id="node-label"
                     onChange={e => setState({...state, "nodelabel": labels.getListNodeLabels[e.target.value]})} >
-                    <option selected value={-1}>Выберите ярлык...</option>
+                    <option value={-1}>Выберите ярлык...</option>
                     { labels && labels.getListNodeLabels.map((label, index) => <option value={index}>{label}</option>) }
                 </select>
             </div>
@@ -90,7 +86,7 @@ const AddNode = () => {
             <div className='col'>
                 {/* node label input */}
                 <div className='input-group input-group-sm mt-1'>
-                    <input type='text' className={'form-control' + state.validation.label} placeholder='Введите новый ярлык...' id="custom-node-label" invalid
+                    <input type='text' className={'form-control' + state.validation.label} placeholder='Введите новый ярлык...' id="custom-node-label"
                         onChange={e => setState({...state, "customNodeLabel": e.target.value})}
                     />
                 </div>
@@ -117,46 +113,15 @@ const AddNode = () => {
             </div>
 
         </div>
-        <p>Поле дополнительного атрибута</p>
-        <div>
-            <div className='row'>
-                <div className='col'>
-                    {/* add extra attribute */}
-                    <div className='input-group input-group-sm'>
-                        {/* <span className='input-group-text'></span> */}
-                        <input className='form-control' placeholder='Название атрибута' type='text' id='extraAttr-name'/>
-                        {/* <span className='input-group-text'></span> */}
-                        <input className='form-control' placeholder='Значение атрибута' type='text' id='extraAttr-value'/>
-                        <button className='btn btn-success btn-sm' type='button' onClick={()=>addExtraAttr()}>Добавить атрибут +</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {
-            state.extraAttribute.length > 0 && <div>
-                <table className='table'>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Название Атрибута</th>
-                            <th>Значение Атрибута</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            state.extraAttribute.map((item, index) => {
-                                return <tr>
-                                    <th scope="row">{index+1}</th>
-                                    <td>{item.name}</td>
-                                    <td>{item.value}</td>
-                                </tr>
-                            })
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-        <button className='btn btn-success' onClick={() => checkValidAndSand()}>ADD</button>
+        
+        {/* Поле дополнительного атрибута */}
+        <ExtraAttr state={state} setState={setState} />
+
+        {/* Таблица дополнительных атрибутов */}
+        { state.extraAttribute.length > 0 && <AttrTable extraAttr={state.extraAttribute} /> }
+
+
+        <button className='btn btn-danger' onClick={() => checkValidAndSand()}>ADD</button>
         <button className='btn btn-success' onClick={() => console.log('state ->', state)}>state</button>
     </div>
 }

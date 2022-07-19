@@ -1,6 +1,6 @@
 import React from 'react'
-import AddNode from './canvas/AddNode';
 import Canva from './canvas/Canva';
+import CanvasNavbar from './canvas/CanvasNavbar';
 import Legend from './canvas/Legend';
 
 
@@ -8,7 +8,7 @@ import Legend from './canvas/Legend';
 const App = () => {
     
     return <div>
-        <AddNode />
+        <CanvasNavbar />
         <Legend />
         <Canva />
     </div>

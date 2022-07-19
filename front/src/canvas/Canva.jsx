@@ -1,17 +1,36 @@
 import React from 'react'
 import { ForceGraph2D } from 'react-force-graph'
-import { useQuery } from '@apollo/client'
-import SpriteText from 'three-spritetext';
-import { GET_ALL_GRAPH } from '../gql/query';
-
+import { useLazyQuery, useQuery, useReactiveVar } from '@apollo/client'
+import { GET_ALL_GRAPH, GET_POSSIBLE_LINK_NAMES } from '../gql/query';
+import { possibleLinkNames, selectNodeTo, sourceNode, targetNode } from '../reactiveVariables/rVar';
 
 const Canva = () => {
     const { data, error } = useQuery(GET_ALL_GRAPH)
+    const selectNodeToSub = useReactiveVar(selectNodeTo)
 
-    console.log('err ->', error)
+    const [getNodeLinks, ] = useLazyQuery(GET_POSSIBLE_LINK_NAMES, {onCompleted: data => possibleLinkNames(data.getPossibleLinkNames)})
+    const selecteNode = (d) => {
+        switch (selectNodeToSub) {
+            case 'source':
+                sourceNode(d)
+                getNodeLinks({variables: {nodeId: d.id}})
+                break;
+            case 'target':
+                targetNode(d)
+                break;
+            case 'info':
+
+                break;
+            case 'edit':
+
+                break;
+            default:
+                break;
+        }
+    }
+
 
     if (data && !error) {
-        console.log('data ->', data)
         return (
             <div className="App">
                 <ForceGraph2D
@@ -25,28 +44,7 @@ const Canva = () => {
                     }
                     linkLabel={l=>l.source.id}
                     nodeAutoColorBy={d => d['properties']['Тип']}
-                    // nodeAutoColorBy={d => d.id}
-                    // nodeColor={d => d.color}
-                    // linkDirectionalArrowLength={3.5}
-                    // linkDirectionalArrowRelPos={1}
-                    // linkCurvature={0.25}
-                    onNodeClick={d=>console.log(d.id)}
-                    linkThreeObjectExtend={true}
-                    linkThreeObject={link => {
-                        // extend link with text sprite
-                        const sprite = new SpriteText('1200');
-                        sprite.color = 'ffffff';
-                        sprite.textHeight = 1.5;
-                        return sprite;
-                    }}
-                    linkPositionUpdate={(sprite, { start, end }) => {
-                        const middlePos = Object.assign(...['x', 'y', 'z'].map(c => ({
-                        [c]: start[c] + (end[c] - start[c]) / 2 // calc middle point
-                        })));
-
-                        // Position sprite
-                        Object.assign(sprite.position, middlePos);
-                    }}
+                    onNodeClick={d=>selecteNode(d)}
                     />
             </div>
         )

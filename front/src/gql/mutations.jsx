@@ -15,3 +15,19 @@ export const ADD_NODE = gql`
         )
     }
 `
+
+export const ADD_LINK = gql`
+    mutation add_link_query(
+        $sourceId: String!
+        $targetId: String!
+        $linkName: String!
+        $extraAttr: [EA!]!
+        ){
+        addLink(
+            sourceId: $sourceId
+            targetId: $targetId
+            linkName: $linkName
+            extraAttr: $extraAttr
+        )
+    }
+`

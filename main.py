@@ -6,10 +6,12 @@ from fastapi import FastAPI
 from neo4j import GraphDatabase
 from loguru import logger
 from fastapi.staticfiles import StaticFiles
+from mutations.create_link import create_link
 
 from mutations.create_node import create_node
 from query.get_jsonable_date import get_jsonable_date
-from query.get_list_node_labels import get_list_node_labels
+from query.get_list_node_labels_from_db import get_list_node_labels_from_db
+from query.get_possible_link_names_from_db import get_possible_link_names_from_db
 
 
 JSON = strawberry.scalar(
@@ -41,8 +43,11 @@ class Query:
 
     @strawberry.field
     def get_list_node_labels(self) -> List[str]:
-        return get_list_node_labels(driver)
+        return get_list_node_labels_from_db(driver)
 
+    @strawberry.field
+    def get_possible_link_names(self, node_id: str) -> List[str]:
+        return get_possible_link_names_from_db(driver, node_id)
 
 @strawberry.type
 class Mutation:
@@ -53,6 +58,11 @@ class Mutation:
         create_node(driver, node_name=node_name, node_labels=node_labels, node_type=node_type, extra_attr=extra_attr)
         return 'ok'
 
+    @strawberry.mutation
+    def add_link(self, source_id: str, target_id: str, link_name: str, extra_attr: List[EA]) -> str:
+        create_link(driver, source_id=source_id, target_id=target_id, link_name=link_name, extra_attr=extra_attr)
+        return 'ok'
+
 schema = strawberry.Schema(query=Query, mutation=Mutation)
 graphql_app = GraphQLRouter(schema)
 
@@ -61,7 +71,7 @@ app.include_router(graphql_app, prefix='/api/graphql')
 
 
 
-app.mount("/static", StaticFiles(directory="front/dist"), name="static")
+app.mount("/", StaticFiles(directory="front/dist"), name="static")
 
 
 driver = GraphDatabase.driver(uri="bolt://localhost:7687", auth=('neo4j', '123'))

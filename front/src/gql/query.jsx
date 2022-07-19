@@ -11,3 +11,9 @@ export const GET_LIST_NODE_LABELS = gql`
         getListNodeLabels
     }
 `
+
+export const GET_POSSIBLE_LINK_NAMES = gql`
+    query get_possible_link_names_query($nodeId: String!){
+        getPossibleLinkNames(nodeId: $nodeId)
+    }
+`

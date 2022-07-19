@@ -1,0 +1,15 @@
+
+// $theme-colors: (
+    // "danger": #43161f,
+    // "success": #1e9734
+// );
+
+$btn-padding-y:               0.5;
+$btn-padding-x:               0.5;
+$btn-font-family:             Times;
+$btn-font-size:               0.8rem;
+// $btn-line-height:             9.9rem;
+$btn-border-radius:           0.2rem;
+// $btn-white-space:             null !default; // Set to `nowrap` to prevent text wrapping
+
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
