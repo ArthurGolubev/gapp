@@ -11,9 +11,7 @@ const Link = () => {
     const sourceNodeSub = useReactiveVar(sourceNode)
     const targetNodeSub = useReactiveVar(targetNode)
     const [addLinkMutation] = useMutation(ADD_LINK)
-    // TODO Запрос на получения всех линков у нода-источника и нода-цели - добавить в select
-    
-    // TODO Создать связь, протестировать сам механизм
+
     const [state, setState] = useState({
         selectedLinkName: '',
         customLinkName: '',

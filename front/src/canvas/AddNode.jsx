@@ -26,7 +26,6 @@ const AddNode = () => {
     )
 
     const checkValidAndSand = () => {
-        let valid = true
 
         let label = state.nodeLabel || state.customNodeLabel
         let name = state.nodeName

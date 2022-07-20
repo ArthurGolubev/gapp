@@ -1,5 +1,13 @@
 import { gql } from "@apollo/client";
 
+
+export const REMOVE_NODE = gql`
+    mutation remove_node_mutation($nodeId: String!){
+        removeNode(nodeId: $nodeId)
+    }
+`
+
+
 export const ADD_NODE = gql`
     mutation add_node_mutation(
         $nodeLabels: String!
@@ -17,7 +25,7 @@ export const ADD_NODE = gql`
 `
 
 export const ADD_LINK = gql`
-    mutation add_link_query(
+    mutation add_link_mutation(
         $sourceId: String!
         $targetId: String!
         $linkName: String!
@@ -31,3 +39,4 @@ export const ADD_LINK = gql`
         )
     }
 `
+

@@ -9,10 +9,12 @@ from fastapi.staticfiles import StaticFiles
 from mutations.create_link import create_link
 
 from mutations.create_node import create_node
+from mutations.delete_node import delete_node
 from query.get_jsonable_date import get_jsonable_date
 from query.get_list_node_labels_from_db import get_list_node_labels_from_db
 from query.get_possible_link_names_from_db import get_possible_link_names_from_db
 
+logger.info('START_1')
 
 JSON = strawberry.scalar(
     NewType("JSON", object),
@@ -63,18 +65,27 @@ class Mutation:
         create_link(driver, source_id=source_id, target_id=target_id, link_name=link_name, extra_attr=extra_attr)
         return 'ok'
 
+    @strawberry.mutation
+    def remove_node(self, node_id: str) -> str:
+        delete_node(driver=driver, node_id=node_id)
+        return "ok"
+
 schema = strawberry.Schema(query=Query, mutation=Mutation)
 graphql_app = GraphQLRouter(schema)
 
 app = FastAPI()
 app.include_router(graphql_app, prefix='/api/graphql')
 
+@app.get('/test')
+def test() -> str:
+    return "He"
 
 
 app.mount("/", StaticFiles(directory="front/dist"), name="static")
 
 
 driver = GraphDatabase.driver(uri="bolt://localhost:7687", auth=('neo4j', '123'))
+
 
 
 def graph():

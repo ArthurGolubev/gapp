@@ -2,11 +2,12 @@ import React from 'react'
 import { ForceGraph2D } from 'react-force-graph'
 import { useLazyQuery, useQuery, useReactiveVar } from '@apollo/client'
 import { GET_ALL_GRAPH, GET_POSSIBLE_LINK_NAMES } from '../gql/query';
-import { possibleLinkNames, selectNodeTo, sourceNode, targetNode } from '../reactiveVariables/rVar';
+import { nodeToRemove, possibleLinkNames, selectNodeTo, sourceNode, targetNode } from '../reactiveVariables/rVar';
 
 const Canva = () => {
     const { data, error } = useQuery(GET_ALL_GRAPH)
     const selectNodeToSub = useReactiveVar(selectNodeTo)
+    
 
     const [getNodeLinks, ] = useLazyQuery(GET_POSSIBLE_LINK_NAMES, {onCompleted: data => possibleLinkNames(data.getPossibleLinkNames)})
     const selecteNode = (d) => {
@@ -17,6 +18,12 @@ const Canva = () => {
                 break;
             case 'target':
                 targetNode(d)
+                break;
+            case 'remove-node':
+                nodeToRemove(d)
+                break;
+            case 'remove-link':
+
                 break;
             case 'info':
 
