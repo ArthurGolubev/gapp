@@ -2,6 +2,7 @@ import { makeVar } from '@apollo/client'
 
 export const selectNodeTo = makeVar('')
 export const nodeToRemove = makeVar('')
+export const linkToRemove = makeVar('')
 
 export const possibleLinkNames = makeVar('')
 

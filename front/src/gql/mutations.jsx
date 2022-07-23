@@ -40,3 +40,8 @@ export const ADD_LINK = gql`
     }
 `
 
+export const REMOVE_LINK = gql`
+    mutation remove_link_mutation($linkId: String!){
+        removeLink(linkId: $linkId)
+    }
+`

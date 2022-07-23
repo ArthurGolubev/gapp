@@ -18,7 +18,16 @@ def create_node(driver, node_labels, node_name, node_type, extra_attr):
         q = f"""
             CREATE (n: `{node_labels}` {attrs}) return n
         """
-        response = list(session.run(q))
+        response = session.run(q)
+
+        print(response.data())
+        print(response.consume())
+        print(response.consume().data())
+        logger.info("W0 ->", response)
+        logger.info("W1 ->", response.consume())
+        logger.info("W3 ->", response)
+        # logger.info("W2 ->", response.keys())
+        response = list(response)
 
         return response
     except Exception as e:

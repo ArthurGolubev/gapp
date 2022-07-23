@@ -3,6 +3,7 @@ import { InMemoryCache } from '@apollo/client'
 
 const linkTransform = (link) => {
     return {
+        id: link.id,
         linkLabel: link.label,
         source: link.start.id,
         target: link.end.id

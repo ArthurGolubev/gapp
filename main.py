@@ -10,6 +10,7 @@ from mutations.create_link import create_link
 
 from mutations.create_node import create_node
 from mutations.delete_node import delete_node
+from mutations.delete_link import delete_link
 from query.get_jsonable_date import get_jsonable_date
 from query.get_list_node_labels_from_db import get_list_node_labels_from_db
 from query.get_possible_link_names_from_db import get_possible_link_names_from_db
@@ -68,6 +69,11 @@ class Mutation:
     @strawberry.mutation
     def remove_node(self, node_id: str) -> str:
         delete_node(driver=driver, node_id=node_id)
+        return "ok"
+
+    @strawberry.mutation
+    def remove_link(self, link_id: str) -> str:
+        delete_link(driver=driver, link_id=link_id)
         return "ok"
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)

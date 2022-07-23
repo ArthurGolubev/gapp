@@ -2,7 +2,7 @@ import React from 'react'
 import { ForceGraph2D } from 'react-force-graph'
 import { useLazyQuery, useQuery, useReactiveVar } from '@apollo/client'
 import { GET_ALL_GRAPH, GET_POSSIBLE_LINK_NAMES } from '../gql/query';
-import { nodeToRemove, possibleLinkNames, selectNodeTo, sourceNode, targetNode } from '../reactiveVariables/rVar';
+import { linkToRemove, nodeToRemove, possibleLinkNames, selectNodeTo, sourceNode, targetNode } from '../reactiveVariables/rVar';
 
 const Canva = () => {
     const { data, error } = useQuery(GET_ALL_GRAPH)
@@ -23,7 +23,8 @@ const Canva = () => {
                 nodeToRemove(d)
                 break;
             case 'remove-link':
-
+                console.log('d link remove ->', d)
+                linkToRemove(d)
                 break;
             case 'info':
 
@@ -49,9 +50,10 @@ const Canva = () => {
                         Тип: ${d['properties']['Тип']}\n
                         Название: ${d['properties']['Название']}`
                     }
-                    linkLabel={l=>l.source.id}
+                    linkLabel={l=>l.id}
                     nodeAutoColorBy={d => d['properties']['Тип']}
                     onNodeClick={d=>selecteNode(d)}
+                    onLinkClick={d=>selecteNode(d)}
                     />
             </div>
         )
