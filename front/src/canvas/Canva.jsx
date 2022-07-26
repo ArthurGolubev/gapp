@@ -2,7 +2,7 @@ import React from 'react'
 import { ForceGraph2D } from 'react-force-graph'
 import { useLazyQuery, useQuery, useReactiveVar } from '@apollo/client'
 import { GET_ALL_GRAPH, GET_POSSIBLE_LINK_NAMES } from '../gql/query';
-import { linkToRemove, nodeToRemove, possibleLinkNames, selectNodeTo, sourceNode, targetNode } from '../reactiveVariables/rVar';
+import { linkToEdit, linkToRemove, nodeToRemove, possibleLinkNames, selectNodeTo, sourceNode, targetNode } from '../reactiveVariables/rVar';
 
 const Canva = () => {
     const { data, error } = useQuery(GET_ALL_GRAPH)
@@ -29,9 +29,14 @@ const Canva = () => {
             case 'info':
 
                 break;
-            case 'edit':
+            case 'link-edit':
+                console.log('link-edit')
+                linkToEdit(d)
+                break;
+            case 'node-edit':
 
                 break;
+            
             default:
                 break;
         }

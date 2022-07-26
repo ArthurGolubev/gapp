@@ -5,6 +5,7 @@ import AddLink from './AddLink'
 import AddNode from './AddNode'
 import RemoveNode from './RemoveNode'
 import RemoveLink from './RemoveLink'
+import EditLink from './EditLink'
 
 const CanvasNavbar = () => {
     return <div className='card'>
@@ -22,6 +23,9 @@ const CanvasNavbar = () => {
             <li className='nav-item'>
                 <Link to="remove-link" onClick={()=>selectNodeTo('remove-link')} className='nav-link'>Remove link</Link>
             </li>
+            <li className='nav-item'>
+                <Link to="link-edit" onClick={()=>selectNodeTo('link-edit')} className='nav-link'>Edit link</Link>
+            </li>
         </ul>
 
         <Routes >
@@ -29,6 +33,7 @@ const CanvasNavbar = () => {
             <Route path="add-link" element={<AddLink />}/>
             <Route path="remove-node" element={<RemoveNode />}/>
             <Route path="remove-link" element={<RemoveLink />}/>
+            <Route path="link-edit" element={<EditLink />}/>
         </Routes>
     </div>
 }

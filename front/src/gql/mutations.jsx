@@ -45,3 +45,9 @@ export const REMOVE_LINK = gql`
         removeLink(linkId: $linkId)
     }
 `
+
+export const EDIT_LINK = gql`
+    mutation edit_link_mutation($linkId: String!, $oldProp: String! $attr: String!, $value: String!){
+        editLinkMutation(linkId: $linkId, oldProp: $oldProp, attr: $attr, value: $value)
+    }
+`

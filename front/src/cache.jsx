@@ -6,7 +6,8 @@ const linkTransform = (link) => {
         id: link.id,
         linkLabel: link.label,
         source: link.start.id,
-        target: link.end.id
+        target: link.end.id,
+        properties: link['properties']
     }
 }
 
